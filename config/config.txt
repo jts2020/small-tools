@@ -1,0 +1,23 @@
+[app]
+version = 1.0
+time = 5 #定时执行时间单位秒
+
+[watch]
+disk= C:\ #","分割
+diskThreshold= 5
+cpuThreshold= 5
+
+[cmd]
+name= cmd
+arg1= /C
+path = C:\jts\IdeaProjects\small-tools\t.cmd //","分割
+
+[mail]
+enable= true
+subject= 监控信息异常情况
+name= 服务监控
+user= maintank2020@126.com
+pass= QAPRSLPZQKLCKYTR
+host= smtp.126.com
+port= 465
+mailTo= maintank2020@126.com #","分割
