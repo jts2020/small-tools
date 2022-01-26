@@ -13,7 +13,7 @@ arg1= /C
 path = C:\jts\IdeaProjects\small-tools\t.cmd //","分割
 
 [mail]
-enable= true
+enable= false
 subject= 监控信息异常情况
 name= 服务监控
 user= maintank2020@126.com

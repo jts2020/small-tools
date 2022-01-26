@@ -2,39 +2,52 @@ package mail
 
 import (
 	"crypto/tls"
+	"fmt"
 	"small-tools/conf"
-	"strconv"
 
 	"gopkg.in/gomail.v2"
 )
 
-func SendMail(mailTo []string, subject string, body string) error {
-	mailInfo := conf.MyConfig.Mymap
-	pix := "mail" + conf.Middle
-	mailConn := map[string]string{
-		"subject": mailInfo[pix+"subject"],
-		"name":    mailInfo[pix+"name"],
-		"user":    mailInfo[pix+"user"],
-		"pass":    mailInfo[pix+"pass"],
-		"host":    mailInfo[pix+"host"],
-		"port":    mailInfo[pix+"port"],
-	}
+func sendMail(mailTo []string, subject string, body string) error {
+	mailInfo := conf.Ymlconf.Mail
 
-	port, _ := strconv.Atoi(mailConn["port"]) //转换端口类型为int
+	msg := gomail.NewMessage()
 
-	m := gomail.NewMessage()
+	msg.SetHeader("From", msg.FormatAddress(mailInfo.User, mailInfo.Name)) //这种方式可以添加别名，即“XX官方”
+	msg.SetHeader("To", mailTo...)                                         //发送给多个用户
+	msg.SetHeader("Subject", mailInfo.Subject)                             //设置邮件主题
+	msg.SetBody("text/html", body)                                         //设置邮件正文
 
-	m.SetHeader("From", m.FormatAddress(mailConn["user"], mailConn["name"])) //这种方式可以添加别名，即“XX官方”
-	m.SetHeader("To", mailTo...)                                             //发送给多个用户
-	m.SetHeader("Subject", subject)                                          //设置邮件主题
-	m.SetBody("text/html", body)                                             //设置邮件正文
-
-	d := gomail.NewDialer(mailConn["host"], port, mailConn["user"], mailConn["pass"])
+	d := gomail.NewDialer(mailInfo.Host, mailInfo.Port, mailInfo.User, mailInfo.Pass)
 
 	d.TLSConfig = &tls.Config{
 		InsecureSkipVerify: true,
 	}
-	err := d.DialAndSend(m)
+	err := d.DialAndSend(msg)
 	return err
+
+}
+
+func SendMail(body string, mailFlag bool) {
+	if !mailFlag {
+		return
+	}
+	fmt.Println("send body:", body)
+	enable := conf.Ymlconf.Mail.Enable
+	if !enable {
+		return
+	}
+	mailTo := conf.Ymlconf.Mail.MailTo
+	fmt.Println("mailTo:", mailTo)
+	subject := conf.Ymlconf.Mail.Subject
+
+	err := sendMail(mailTo, subject, body)
+	if err != nil {
+		fmt.Println(err)
+		fmt.Println("send fail")
+		return
+	}
+
+	fmt.Println("send successfully")
 
 }
