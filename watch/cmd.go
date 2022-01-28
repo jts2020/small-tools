@@ -6,7 +6,7 @@ import (
 	"syscall"
 )
 
-func WatchCmd(body *string) {
+func WatchCmd(body *string, mailFlag *bool) {
 	name := conf.Ymlconf.Cmd.Name
 	arg1 := conf.Ymlconf.Cmd.Arg1
 	cmdPaths := conf.Ymlconf.Cmd.Paths
@@ -17,7 +17,7 @@ func WatchCmd(body *string) {
 			buf, _ := command.Output()
 			code := command.ProcessState.Sys().(syscall.WaitStatus).ExitStatus()
 			if code != 0 {
-				MailFlag = true
+				*mailFlag = true
 				*body += "<p>[" + cmdPath + "]:<br/>" + string(buf) + "</p>"
 			}
 		}

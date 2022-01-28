@@ -9,6 +9,7 @@ import (
 )
 
 func main() {
+
 	fmt.Printf("init Conf:%v\n", conf.Ymlconf)
 
 	timer.Handle(handle)
@@ -17,15 +18,16 @@ func main() {
 
 func handle() {
 	var body string
+	var mailFlag bool
 
 	watch.HeadBody(&body)
 
-	watch.WatchCPU(&body)
+	watch.WatchCPU(&body, &mailFlag)
 
-	watch.WatchDisk(&body)
+	watch.WatchDisk(&body, &mailFlag)
 
-	watch.WatchCmd(&body)
+	watch.WatchCmd(&body, &mailFlag)
 
-	mail.SendMail(body, watch.MailFlag)
+	mail.SendMail(body, mailFlag)
 
 }
