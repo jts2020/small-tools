@@ -1,0 +1,23 @@
+app:
+  version: 1.0
+  cron: "*/5 * * * * ?"
+watch:
+  disks:
+    - C:\
+  diskThreshold: 80
+  cpuThreshold: 80
+cmd:
+  name: cmd
+  arg1: /C
+  paths:
+    - C:\jts\IdeaProjects\small-tools\t.cmd
+mail:
+  enable: false
+  subject: 1
+  name: 2
+  user: maintank2020@126.com
+  pass: QAPRSLPZQKLCKYTR
+  host: smtp.126.com
+  port: 465
+  mailTo:
+    -  maintank2020@126.com
