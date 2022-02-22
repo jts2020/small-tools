@@ -1,23 +1,28 @@
 app:
-  version: 1.0
-  cron: "*/5 * * * * ?"
+  version: 1.0 #配置文件版本
+  cron: "*/5 * * * * ?" #监控定时，CRON表达式，秒分时日月年
 watch:
-  disks:
-    - C:\
-  diskThreshold: 80
-  cpuThreshold: 80
+  disks: #需要监控的挂载卷对应的目录列表
+    - /home
+    - /app
+  diskThreshold: 80 #目录监控阀值%
+  cpuThreshold: 80 #CPU监控阀值%
 cmd:
-  name: cmd
-  arg1: /C
-  paths:
-    - C:\jts\IdeaProjects\small-tools\t.cmd
+  name: sh
+  arg1: -c
+  paths: #样例根据需要调整，扩展监控脚本路径列表，脚本中exit 0为成功不进行捕捉，其他值为失败，此时echo输出为邮件内容
+    - /app/small-tools/sh/chkZombie.sh
+    - /app/small-tools/sh/chkApp.sh
+    - /app/small-tools/sh/chkAppHealth.sh
 mail:
-  enable: false
-  subject: 1
-  name: 2
-  user: maintank2020@126.com
-  pass: QAPRSLPZQKLCKYTR
-  host: smtp.126.com
-  port: 465
-  mailTo:
-    -  maintank2020@126.com
+  enable: false #E-mail开启开关
+  subject: APP服务监控异常情况信息 #邮件主题
+  name: APP服务监控 #发件人名称
+  user: xxxxx@126.com #发件邮箱
+  pass: QAPRSLPZQKLCKYTR #发件邮箱密码或邮箱授权码
+  host: smtp.126.com #邮箱服务器地址或IP
+  port: 465 #邮箱服务器地址端口
+  mailTo: #告警时收件地址列表
+    -  xxx1@126.com
+    -  xxx2@126.com
+    -  xxx3@126.com
